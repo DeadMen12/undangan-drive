@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>UNDANGAN PERNIKAHAN</h1>
+            <h2>Fayruz & Henri</h2>
+            <p>06.03.21</p>
+        </header>
+
+        <main>
+            <div class="invitation-box">
+                <p>Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+                <div class="name-box">
+                    <p>User</p>
+                </div>
+            </div>
+
+            <p class="note">Mohon maaf bila ada kesalahan penulisan nama / gelar</p>
+
+            <!-- QR code generation -->
+            <button class="qr-btn" id="generate-qr">Lihat QR</button>
+        </main>
+    </div>
+
+    <script>
+        // When the "Lihat QR" button is clicked, open the new page to generate and view the QR code
+        document.getElementById('generate-qr').addEventListener('click', function() {
+            let uniqueID = 'user-' + Math.random().toString(36).substring(2, 15); // Generates a unique ID
+            // Open the lihat-qr.html page and pass the unique ID via URL parameters
+            window.open('lihat-qr.html?uid=' + uniqueID, '_blank');
+        });
+    </script>
+</body>
+</html>

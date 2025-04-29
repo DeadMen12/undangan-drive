@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script> <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> <!-- jsPDF Library -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #qr-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .download-btn {
+            margin-top: 20px;
+            background-color: #f47c7c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background-color: #f15959;
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Code for Invitation</h1>
+    <div id="qr-container"></div> <!-- This div will display the QR code -->
+
+    <button class="download-btn" id="download-qr">Download QR Code as PDF</button>
+
+    <script>
+        // Get the unique ID from the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const uniqueID = urlParams.get('uid'); // Get the unique ID passed from index.html
+
+        let qrText = "https://example.com/invitation/" + uniqueID;  // Unique URL for QR code
+
+        // Function to generate the QR code
+        function generateQRCode() {
+            // Clear the previous QR code
+            document.getElementById('qr-container').innerHTML = '';
+
+            // Generate the new QR code with a fixed size (256px)
+            new QRCode(document.getElementById('qr-container'), {
+                text: qrText,
+                width: 256,  // Fixed size
+                height: 256, // Fixed size
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+
+        // Function to download the QR code as a PDF
+        function downloadQRCodePDF() {
+            let canvas = document.querySelector('#qr-container canvas'); // Get the QR code canvas
+            if (canvas) {
+                // Convert the canvas to a Data URL (base64)
+                let dataURL = canvas.toDataURL('image/png');
+
+                // Create a new jsPDF instance
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Add the QR code image to the PDF
+                doc.addImage(dataURL, 'PNG', 10, 10, 180, 180); // x, y, width, height
+
+                // Save the PDF
+                doc.save('qr-code.pdf');
+            }
+        }
+
+        // Generate the QR code automatically when the page loads
+        window.onload = generateQRCode;
+
+        // Event listener for the "Download QR Code as PDF" button
+        document.getElementById('download-qr').addEventListener('click', downloadQRCodePDF);
+    </script>
+</body>
+</html>
